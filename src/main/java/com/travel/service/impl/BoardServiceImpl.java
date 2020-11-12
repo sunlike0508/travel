@@ -1,7 +1,7 @@
 package com.travel.service.impl;
 
 import com.travel.file.FileUtils;
-import com.travel.model.Board;
+import com.travel.model.BoardBase;
 import com.travel.model.BoardFile;
 import com.travel.repository.BoardFileRepository;
 import com.travel.repository.BoardRepository;
@@ -25,15 +25,15 @@ public class BoardServiceImpl implements BoardService {
     private final FileUtils fileUtils;
 
     @Override
-    public List<Board> selectBoardList(String creatorId) {
+    public List<BoardBase> selectBoardList(String creatorId) {
         return boardRepository.findAllByCreatorId(creatorId);
     }
 
     @Override
-    public void insertBoard(Board board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-        boardRepository.save(board);
+    public void insertBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+        boardRepository.save(boardBase);
 
-        List<BoardFile> boardFiles = fileUtils.parseFileInfo(board.getIdx(), multipartHttpServletRequest);
+        List<BoardFile> boardFiles = fileUtils.parseFileInfo(boardBase.getId(), multipartHttpServletRequest);
 
         if(!CollectionUtils.isEmpty(boardFiles)){
             for(BoardFile boardFile : boardFiles) {
@@ -43,10 +43,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void updateBoard(Board board, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-        boardRepository.save(board);
+    public void updateBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+        boardRepository.save(boardBase);
 
-        List<BoardFile> boardFiles = fileUtils.parseFileInfo(board.getIdx(), multipartHttpServletRequest);
+        List<BoardFile> boardFiles = fileUtils.parseFileInfo(boardBase.getId(), multipartHttpServletRequest);
 
         if(!CollectionUtils.isEmpty(boardFiles)){
             for(BoardFile boardFile : boardFiles) {

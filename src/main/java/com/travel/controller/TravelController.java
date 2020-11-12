@@ -1,6 +1,6 @@
 package com.travel.controller;
 
-import com.travel.model.Board;
+import com.travel.model.BoardBase;
 import com.travel.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,33 +19,33 @@ public class TravelController {
     private final BoardService boardService;
 
     @GetMapping("/{creatorId}")
-    public ResponseEntity<List<Board>> selectBoardList(@PathVariable("creatorId") String creatorId) {
+    public ResponseEntity<List<BoardBase>> selectBoardList(@PathVariable("creatorId") String creatorId) {
 
-        List<Board> boards = boardService.selectBoardList(creatorId);
+        List<BoardBase> boardBases = boardService.selectBoardList(creatorId);
 
-        return new ResponseEntity<>(boards, HttpStatus.OK);
+        return new ResponseEntity<>(boardBases, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Board> insertBoard(@RequestBody Board board ,
-                                             MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+    public ResponseEntity<BoardBase> insertBoard(@RequestBody BoardBase boardBase,
+                                                 MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 
-        boardService.insertBoard(board, multipartHttpServletRequest);
+        boardService.insertBoard(boardBase, multipartHttpServletRequest);
 
         return new ResponseEntity(null, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<Board> updateBoard(@RequestBody Board board,
-                                             MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+    public ResponseEntity<BoardBase> updateBoard(@RequestBody BoardBase boardBase,
+                                                 MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 
-        boardService.updateBoard(board, multipartHttpServletRequest);
+        boardService.updateBoard(boardBase, multipartHttpServletRequest);
 
         return new ResponseEntity(null, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idx}")
-    public ResponseEntity<Board> deleteBoard(@PathVariable("idx") long idx) {
+    public ResponseEntity<BoardBase> deleteBoard(@PathVariable("idx") long idx) {
 
         boardService.deleteBoard(idx);
 

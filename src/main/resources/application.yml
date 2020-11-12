@@ -1,0 +1,46 @@
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+            base-path: "/cube/monitor"
+            path-mapping:
+                health: "healthcheck"
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        hikari:
+            maximum-pool-size: 3
+        password: root
+            url: jdbc:mysql://localhost:3306/mysql?characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=CONVERT_TO_NULL
+            username: root
+            hikari:
+                maximum-pool-size: 3
+
+    jpa:
+        generate-ddl: false
+        hibernate:
+            naming:
+                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        show-sql: false
+        properties:
+            hibernate.default_batch_fetch_size: 20
+    pid:
+        file: cube_ota.pid
+server:
+    port: 8089
+logging:
+    level:
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql:
+                            BasicBinder: TRACE
+    file:
+        path: "./logs"
+
+
+service:
+    name: TRAVEL_BOARD

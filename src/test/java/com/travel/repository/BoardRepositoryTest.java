@@ -1,6 +1,6 @@
 package com.travel.repository;
 
-import com.travel.model.Board;
+import com.travel.model.BoardBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -16,10 +16,10 @@ class BoardRepositoryTest {
 
     public void test() {
 
-        Board givenBoard = Board.builder().build();
+        BoardBase givenBoardBase = new BoardBase();
 
-        Board expectedBoard = boardRepository.save(givenBoard);
+        BoardBase expectedBoardBase = boardRepository.save(givenBoardBase);
 
-        assertThat(givenBoard.getTitle(), is(expectedBoard.getTitle()));
+        assertThat(givenBoardBase.getTitle(), is(expectedBoardBase.getTitle()));
     }
 }

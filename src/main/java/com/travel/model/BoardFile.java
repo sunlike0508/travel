@@ -9,13 +9,16 @@ import java.time.LocalDateTime;
 
 @Table(name="board_file")
 @Data
-@Builder
 @Entity
 @NoArgsConstructor
 public class BoardFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idx;
+	private long id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "boardDetail_id")
+	private BoardDetail boardDetail;
 	
 	@Column(nullable=false)
 	private String originalFileName;
