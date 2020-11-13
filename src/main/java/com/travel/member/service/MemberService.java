@@ -4,4 +4,6 @@ import com.travel.member.model.Member;
 
 public interface MemberService {
     Member findByMemberId(String memberId);
+
+    void joinMember(Member member);
 }

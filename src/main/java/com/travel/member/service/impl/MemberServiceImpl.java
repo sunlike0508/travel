@@ -16,4 +16,9 @@ public class MemberServiceImpl implements MemberService {
     public Member findByMemberId(String memberId) {
         return memberRepository.findByMemberId(memberId);
     }
+
+    @Override
+    public void joinMember(Member member) {
+        memberRepository.save(member);
+    }
 }
