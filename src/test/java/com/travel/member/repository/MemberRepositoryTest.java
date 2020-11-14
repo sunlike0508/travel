@@ -41,7 +41,7 @@ class MemberRepositoryTest {
         member.setPassword("test1234");
         memberRepository.save(member);
 
-        Member findedMember = memberRepository.findByMemberId(member.getMemberId());
+        Member findedMember = memberRepository.findByMemberIdAndPassword(member.getMemberId(), member.getPassword());
 
         assertThat(findedMember.getName(), is(member.getName()));
         assertThat(findedMember.getMemberId(), is(member.getMemberId()));

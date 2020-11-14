@@ -2,6 +2,7 @@ package com.travel.board.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,11 +39,12 @@ public class BoardBase {
 	@Column(name = "end_date")
 	private LocalDateTime endDate;
 
-	@Column(name = "main_url")
-	private String main_url;
+	@Column(name = "main_photo_path")
+	private String mainPhotoPath;
 	
-	@Column(name = "created_Date_time", nullable=false)
-	private LocalDateTime createdDatetime = LocalDateTime.now();
+	@Column(name = "create_at", nullable=false)
+	@CreationTimestamp
+	private LocalDateTime createdDatetime;
 
 	@OneToMany(fetch=FetchType.EAGER, mappedBy = "boardBase", cascade=CascadeType.ALL)
 	private List<BoardDetail> boardDetails;

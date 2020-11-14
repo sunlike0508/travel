@@ -16,9 +16,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/{memberId}")
-    public ResponseEntity<Member> getMember(@PathVariable("memberId") String memberId) {
+    public ResponseEntity<Member> loginMember(@PathVariable("memberId") String memberId, @RequestParam String password) {
 
-        Member member = memberService.findByMemberId(memberId);
+        Member member = memberService.findByMemberIdAndPassword(memberId, password);
 
         return new ResponseEntity<>(member, HttpStatus.OK);
     }

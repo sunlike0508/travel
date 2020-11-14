@@ -31,7 +31,8 @@ class MemberServiceTest {
         givenMember.setPassword("password");
         memberRepository.save(givenMember);
 
-        Member expectedMember = memberService.findByMemberId(givenMember.getMemberId());
+        Member expectedMember
+                = memberService.findByMemberIdAndPassword(givenMember.getMemberId(), givenMember.getPassword());
 
         assertThat(expectedMember.getName(), is(givenMember.getName()));
         assertThat(expectedMember.getMemberId(), is(givenMember.getMemberId()));

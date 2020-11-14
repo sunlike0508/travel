@@ -13,8 +13,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    public Member findByMemberId(String memberId) {
-        return memberRepository.findByMemberId(memberId);
+    public Member findByMemberIdAndPassword(String memberId, String password) {
+        return memberRepository.findByMemberIdAndPassword(memberId, password);
     }
 
     @Override
