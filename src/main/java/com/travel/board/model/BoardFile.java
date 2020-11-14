@@ -2,6 +2,7 @@ package com.travel.board.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,25 +17,19 @@ public class BoardFile {
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "boardDetail_id")
+	@JoinColumn(name = "board_detail_id")
 	private BoardDetail boardDetail;
-	
-	@Column(nullable=false)
-	private String originalFileName;
-	
-	@Column(nullable=false)
-	private String storedFilePath;
-	
-	@Column(nullable=false)
+
+	@Column(name = "photo_path", nullable=false)
+	private String photoPath;
+
+	@Column(name = "file_size", nullable=false)
 	private long fileSize;
 
-	@Column(nullable=false)
+	@Column(name = "creator_id", nullable=false)
 	private String creatorId;
-	
-	@Column(nullable=false)
-	private LocalDateTime createdDatetime = LocalDateTime.now();
-	
-	private String updaterId;
-	
-	private LocalDateTime updatedDatetime;
+
+	@Column(name =  "created_at", nullable=false)
+	@CreationTimestamp
+	private LocalDateTime createdDatetime;
 }

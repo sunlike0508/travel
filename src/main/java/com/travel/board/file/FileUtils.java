@@ -28,7 +28,7 @@ public class FileUtils {
     	ZonedDateTime current = ZonedDateTime.now();
     	String path = "images/"+current.format(format);
     	File file = new File(path);
-		if(file.exists() == false){
+		if(!file.exists()){
 			file.mkdirs();
 		}
 		
@@ -40,7 +40,7 @@ public class FileUtils {
 		while(iterator.hasNext()){
 			List<MultipartFile> list = multipartHttpServletRequest.getFiles(iterator.next());
 			for (MultipartFile multipartFile : list){
-				if(multipartFile.isEmpty() == false){
+				if(!multipartFile.isEmpty()){
 					contentType = multipartFile.getContentType();
 					if(ObjectUtils.isEmpty(contentType)){
 						break;
@@ -60,12 +60,12 @@ public class FileUtils {
 						}
 					}
 					
-					newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
+					newFileName = System.nanoTime() + originalFileExtension;
 					BoardFile boardFile = new BoardFile();
 					boardFile.setId(idx);
 					boardFile.setFileSize(multipartFile.getSize());
-					boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
-					boardFile.setStoredFilePath(path + "/" + newFileName);
+					//boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
+					boardFile.setPhotoPath(path + "/" + newFileName);
 					fileList.add(boardFile);
 					
 					file = new File(path + "/" + newFileName);
@@ -87,7 +87,7 @@ public class FileUtils {
     	ZonedDateTime current = ZonedDateTime.now();
     	String path = "images/"+current.format(format);
     	File file = new File(path);
-		if(file.exists() == false){
+		if(!file.exists()){
 			file.mkdirs();
 		}
 		
@@ -98,7 +98,7 @@ public class FileUtils {
 		while(iterator.hasNext()){
 			List<MultipartFile> list = multipartHttpServletRequest.getFiles(iterator.next());
 			for (MultipartFile multipartFile : list){
-				if(multipartFile.isEmpty() == false){
+				if(!multipartFile.isEmpty()){
 					contentType = multipartFile.getContentType();
 					if(ObjectUtils.isEmpty(contentType)){
 						break;
@@ -118,11 +118,11 @@ public class FileUtils {
 						}
 					}
 					
-					newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
+					newFileName = System.nanoTime() + originalFileExtension;
 					BoardFile boardFile = new BoardFile();
 					boardFile.setFileSize(multipartFile.getSize());
-					boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
-					boardFile.setStoredFilePath(path + "/" + newFileName);
+					//boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
+					boardFile.setPhotoPath(path + "/" + newFileName);
 					boardFile.setCreatorId("admin");
 					fileList.add(boardFile);
 					

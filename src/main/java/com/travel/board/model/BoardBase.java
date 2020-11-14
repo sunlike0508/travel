@@ -30,7 +30,7 @@ public class BoardBase {
 	@Column(name = "parties", nullable=false)
 	private String parties;
 
-	@Column(name = "creatorId", nullable=false)
+	@Column(name = "creator_Id", nullable=false)
 	private String creatorId;
 
 	@Column(name = "start_date")
