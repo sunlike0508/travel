@@ -30,16 +30,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void insertBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-        boardRepository.save(boardBase);
+    public BoardBase insertBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+        BoardBase savedBoardBase = boardRepository.save(boardBase);
 
-        List<BoardFile> boardFiles = fileUtils.parseFileInfo(boardBase.getId(), multipartHttpServletRequest);
+//        List<BoardFile> boardFiles = fileUtils.parseFileInfo(boardBase.getId(), multipartHttpServletRequest);
+//
+//        if(!CollectionUtils.isEmpty(boardFiles)){
+//            for(BoardFile boardFile : boardFiles) {
+//                boardFileRepository.save(boardFile);
+//            }
+//        }
 
-        if(!CollectionUtils.isEmpty(boardFiles)){
-            for(BoardFile boardFile : boardFiles) {
-                boardFileRepository.save(boardFile);
-            }
-        }
+        return savedBoardBase;
     }
 
     @Override

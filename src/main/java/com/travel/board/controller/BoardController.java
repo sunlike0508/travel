@@ -30,9 +30,9 @@ public class BoardController {
     public ResponseEntity<BoardBase> insertBoard(@RequestBody BoardBase boardBase,
                                                  MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 
-        boardService.insertBoard(boardBase, multipartHttpServletRequest);
+        BoardBase savedBoardBase = boardService.insertBoard(boardBase, multipartHttpServletRequest);
 
-        return new ResponseEntity(null, HttpStatus.OK);
+        return new ResponseEntity(savedBoardBase, HttpStatus.OK);
     }
 
     @PatchMapping
