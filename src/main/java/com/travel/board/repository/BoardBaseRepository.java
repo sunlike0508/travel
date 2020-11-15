@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BoardRepository extends JpaRepository<BoardBase, Long> {
+public interface BoardBaseRepository extends JpaRepository<BoardBase, Long> {
     List<BoardBase> findAllByCreatorId(String creatorId);
 }

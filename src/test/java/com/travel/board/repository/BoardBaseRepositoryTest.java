@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
-class BoardRepositoryTest {
+class BoardBaseRepositoryTest {
 
     @Autowired
-    private BoardRepository boardRepository;
+    private BoardBaseRepository boardBaseRepository;
 
     @Test
     public void 글_저장_테스트() {
@@ -35,7 +35,7 @@ class BoardRepositoryTest {
         givenBoardBase.setEndDate(LocalDateTime.now());
         givenBoardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBase expectedBoardBase = boardRepository.save(givenBoardBase);
+        BoardBase expectedBoardBase = boardBaseRepository.save(givenBoardBase);
 
         System.out.println(expectedBoardBase.toString());
 
@@ -64,9 +64,9 @@ class BoardRepositoryTest {
             boardBases.add(boardBase);
         }
 
-        boardRepository.saveAll(boardBases);
+        boardBaseRepository.saveAll(boardBases);
 
-        List<BoardBase> boardBaseList = boardRepository.findAllByCreatorId(creatorId);
+        List<BoardBase> boardBaseList = boardBaseRepository.findAllByCreatorId(creatorId);
 
         assertThat(boardBaseList.size(), is(5));
     }
@@ -84,18 +84,18 @@ class BoardRepositoryTest {
         boardBase.setEndDate(LocalDateTime.now());
         boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBase savedBoardBase = boardRepository.save(boardBase);
+        BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
 
-        BoardBase findBoardBase = boardRepository.findById(savedBoardBase.getId()).get();
+        BoardBase findBoardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
 
         assertThat(savedBoardBase.getId(),is(findBoardBase.getId()));
 
         // when
-        boardRepository.delete(savedBoardBase);
+        boardBaseRepository.delete(savedBoardBase);
 
         // then
         NoSuchElementException expectedException
-                = assertThrows(NoSuchElementException.class, () -> boardRepository.findById(savedBoardBase.getId()).get());
+                = assertThrows(NoSuchElementException.class, () -> boardBaseRepository.findById(savedBoardBase.getId()).get());
 
         assertThat(expectedException.getMessage(), is("No value present"));
 

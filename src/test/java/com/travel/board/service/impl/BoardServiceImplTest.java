@@ -1,7 +1,7 @@
 package com.travel.board.service.impl;
 
 import com.travel.board.model.BoardBase;
-import com.travel.board.repository.BoardRepository;
+import com.travel.board.repository.BoardBaseRepository;
 import com.travel.board.service.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardServiceImplTest {
 
     @Autowired
-    private BoardRepository boardRepository;
+    private BoardBaseRepository boardBaseRepository;
 
     @Autowired
     private BoardService boardService;
@@ -45,7 +45,7 @@ class BoardServiceImplTest {
             boardBases.add(boardBase);
         }
 
-        boardRepository.saveAll(boardBases);
+        boardBaseRepository.saveAll(boardBases);
 
         List<BoardBase> boardBaseList = boardService.selectBoardList(creatorId);
 
@@ -85,7 +85,7 @@ class BoardServiceImplTest {
 
         BoardBase savedBoardBase = boardService.insertBoard(boardBase, null);
 
-        BoardBase findBoardBase = boardRepository.findById(savedBoardBase.getId()).get();
+        BoardBase findBoardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
 
         assertThat(savedBoardBase.getId(), is(findBoardBase.getId()));
 
@@ -95,7 +95,7 @@ class BoardServiceImplTest {
 
         // then
         NoSuchElementException expectedException
-                = assertThrows(NoSuchElementException.class, () -> boardRepository.findById(savedBoardBase.getId()).get());
+                = assertThrows(NoSuchElementException.class, () -> boardBaseRepository.findById(savedBoardBase.getId()).get());
 
         assertThat(expectedException.getMessage(), is("No value present"));
     }
