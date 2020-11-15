@@ -10,7 +10,7 @@ public interface BoardService {
 
     BoardBase insertBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 
-    void updateBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
+    BoardBase updateBoard(BoardBase boardBase, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 
     void deleteBoard(long idx);
 }

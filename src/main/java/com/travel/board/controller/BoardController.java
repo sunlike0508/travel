@@ -39,9 +39,9 @@ public class BoardController {
     public ResponseEntity<BoardBase> updateBoard(@RequestBody BoardBase boardBase,
                                                  MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 
-        boardService.updateBoard(boardBase, multipartHttpServletRequest);
+        BoardBase updatedBoardBase = boardService.updateBoard(boardBase, multipartHttpServletRequest);
 
-        return new ResponseEntity(null, HttpStatus.OK);
+        return new ResponseEntity(updatedBoardBase, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idx}")

@@ -29,7 +29,7 @@ public class BoardFile {
 	@Column(name = "creator_id", nullable=false)
 	private String creatorId;
 
-	@Column(name =  "created_at", nullable=false)
+	@Column(name =  "create_at", nullable=false)
 	@CreationTimestamp
 	private LocalDateTime createdDatetime;
 }

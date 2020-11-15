@@ -3,17 +3,17 @@ package com.travel.board.repository;
 import com.travel.board.model.BoardBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -69,5 +69,36 @@ class BoardRepositoryTest {
         List<BoardBase> boardBaseList = boardRepository.findAllByCreatorId(creatorId);
 
         assertThat(boardBaseList.size(), is(5));
+    }
+
+    @Test
+    public void 글_삭제_테스트() {
+
+        BoardBase boardBase = new BoardBase();
+        boardBase.setTitle("글 작성");
+        boardBase.setLocation("의정부");
+        boardBase.setContents("의정부 놀러감");
+        boardBase.setParties("친구들과");
+        boardBase.setCreatorId("sunlike0301");
+        boardBase.setStartDate(LocalDateTime.now());
+        boardBase.setEndDate(LocalDateTime.now());
+        boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+
+        BoardBase savedBoardBase = boardRepository.save(boardBase);
+
+        BoardBase findBoardBase = boardRepository.findById(savedBoardBase.getId()).get();
+
+        assertThat(savedBoardBase.getId(),is(findBoardBase.getId()));
+
+        // when
+        boardRepository.delete(savedBoardBase);
+
+        // then
+        NoSuchElementException expectedException
+                = assertThrows(NoSuchElementException.class, () -> boardRepository.findById(savedBoardBase.getId()).get());
+
+        assertThat(expectedException.getMessage(), is("No value present"));
+
+
     }
 }

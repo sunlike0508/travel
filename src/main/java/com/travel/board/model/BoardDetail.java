@@ -25,7 +25,7 @@ public class BoardDetail {
 	@Column(name = "travel_date")
 	private LocalDateTime travelDate;
 
-	@Column(name = "created_at", nullable=false)
+	@Column(name = "create_at", nullable=false)
 	@CreationTimestamp
 	private LocalDateTime createdDatetime;
 

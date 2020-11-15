@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -71,11 +72,31 @@ class BoardServiceImplTest {
     }
 
     @Test
-    void updateBoard() {
-    }
+    void deleteBoard() throws Exception {
+        BoardBase boardBase = new BoardBase();
+        boardBase.setTitle("글 작성");
+        boardBase.setLocation("의정부");
+        boardBase.setContents("의정부 놀러감");
+        boardBase.setParties("친구들과");
+        boardBase.setCreatorId("sunlike0301");
+        boardBase.setStartDate(LocalDateTime.now());
+        boardBase.setEndDate(LocalDateTime.now());
+        boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-    @Test
-    void deleteBoard() {
+        BoardBase savedBoardBase = boardService.insertBoard(boardBase, null);
 
+        BoardBase findBoardBase = boardRepository.findById(savedBoardBase.getId()).get();
+
+        assertThat(savedBoardBase.getId(), is(findBoardBase.getId()));
+
+        // when
+        boardService.deleteBoard(savedBoardBase.getId());
+
+
+        // then
+        NoSuchElementException expectedException
+                = assertThrows(NoSuchElementException.class, () -> boardRepository.findById(savedBoardBase.getId()).get());
+
+        assertThat(expectedException.getMessage(), is("No value present"));
     }
 }
