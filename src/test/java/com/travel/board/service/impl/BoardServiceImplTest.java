@@ -1,5 +1,6 @@
 package com.travel.board.service.impl;
 
+import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.model.BoardBase;
 import com.travel.board.repository.BoardBaseRepository;
 import com.travel.board.service.BoardService;
@@ -15,7 +16,7 @@ import java.util.NoSuchElementException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class BoardServiceImplTest {
@@ -47,55 +48,55 @@ class BoardServiceImplTest {
 
         boardBaseRepository.saveAll(boardBases);
 
-        List<BoardBase> boardBaseList = boardService.selectBoardList(creatorId);
+        List<BoardBaseDTO> boardBaseDTOs = boardService.selectBoardList(creatorId);
 
-        assertThat(boardBaseList.size(), is(5));
+        assertThat(boardBaseDTOs.size(), is(5));
     }
 
     @Test
     void insertBoard() throws Exception {
-        BoardBase boardBase = new BoardBase();
-        boardBase.setTitle("글 작성");
-        boardBase.setLocation("의정부");
-        boardBase.setContents("의정부 놀러감");
-        boardBase.setParties("친구들과");
-        boardBase.setCreatorId("sunlike0301");
-        boardBase.setStartDate(LocalDateTime.now());
-        boardBase.setEndDate(LocalDateTime.now());
-        boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+        BoardBaseDTO boardBaseDTO = new BoardBaseDTO();
+        boardBaseDTO.setTitle("글 작성");
+        boardBaseDTO.setLocation("의정부");
+        boardBaseDTO.setContents("의정부 놀러감");
+        boardBaseDTO.setParties("친구들과");
+        boardBaseDTO.setCreatorId("sunlike0301");
+        boardBaseDTO.setStartDate(LocalDateTime.now());
+        boardBaseDTO.setEndDate(LocalDateTime.now());
+        boardBaseDTO.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBase savedBoardBase = boardService.insertBoard(boardBase, null);
+        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO, null);
 
-        assertThat(boardBase.getTitle(), is(savedBoardBase.getTitle()));
-        assertThat(boardBase.getLocation(), is(savedBoardBase.getLocation()));
-        assertThat(boardBase.getContents(), is(savedBoardBase.getContents()));
+        assertThat(boardBaseDTO.getTitle(), is(savedBoardBaseDTO.getTitle()));
+        assertThat(boardBaseDTO.getLocation(), is(savedBoardBaseDTO.getLocation()));
+        assertThat(boardBaseDTO.getContents(), is(savedBoardBaseDTO.getContents()));
     }
 
     @Test
     void deleteBoard() throws Exception {
-        BoardBase boardBase = new BoardBase();
-        boardBase.setTitle("글 작성");
-        boardBase.setLocation("의정부");
-        boardBase.setContents("의정부 놀러감");
-        boardBase.setParties("친구들과");
-        boardBase.setCreatorId("sunlike0301");
-        boardBase.setStartDate(LocalDateTime.now());
-        boardBase.setEndDate(LocalDateTime.now());
-        boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+        BoardBaseDTO boardBaseDTO = new BoardBaseDTO();
+        boardBaseDTO.setTitle("글 작성");
+        boardBaseDTO.setLocation("의정부");
+        boardBaseDTO.setContents("의정부 놀러감");
+        boardBaseDTO.setParties("친구들과");
+        boardBaseDTO.setCreatorId("sunlike0301");
+        boardBaseDTO.setStartDate(LocalDateTime.now());
+        boardBaseDTO.setEndDate(LocalDateTime.now());
+        boardBaseDTO.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBase savedBoardBase = boardService.insertBoard(boardBase, null);
+        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO, null);
 
-        BoardBase findBoardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
+        BoardBase findBoardBase = boardBaseRepository.findById(savedBoardBaseDTO.getId()).get();
 
-        assertThat(savedBoardBase.getId(), is(findBoardBase.getId()));
+        assertThat(savedBoardBaseDTO.getId(), is(findBoardBase.getId()));
 
         // when
-        boardService.deleteBoard(savedBoardBase.getId());
+        boardService.deleteBoard(savedBoardBaseDTO.getId());
 
 
         // then
-        NoSuchElementException expectedException
-                = assertThrows(NoSuchElementException.class, () -> boardBaseRepository.findById(savedBoardBase.getId()).get());
+        NoSuchElementException expectedException = assertThrows(NoSuchElementException.class,
+                () -> boardBaseRepository.findById(savedBoardBaseDTO.getId()).get());
 
         assertThat(expectedException.getMessage(), is("No value present"));
     }

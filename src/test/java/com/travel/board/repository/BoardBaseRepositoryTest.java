@@ -37,8 +37,6 @@ class BoardBaseRepositoryTest {
 
         BoardBase expectedBoardBase = boardBaseRepository.save(givenBoardBase);
 
-        System.out.println(expectedBoardBase.toString());
-
         assertThat(givenBoardBase.getTitle(), is(expectedBoardBase.getTitle()));
         assertThat(givenBoardBase.getLocation(), is(expectedBoardBase.getLocation()));
         assertThat(givenBoardBase.getContents(), is(expectedBoardBase.getContents()));

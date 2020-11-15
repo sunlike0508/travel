@@ -17,62 +17,56 @@ import java.util.List;
 public class FileUtils {
 	
 	public List<BoardFile> parseFileInfo(long idx, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
+
 		if(ObjectUtils.isEmpty(multipartHttpServletRequest)){
 			return null;
 		}
-		
-		List<BoardFile> fileList = new ArrayList<>();
-		
+
 		/* 파일이 업로드될 폴더를 생성 */
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd"); 
-    	ZonedDateTime current = ZonedDateTime.now();
-    	String path = "images/"+current.format(format);
+    	String path = "images/" + ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
     	File file = new File(path);
 		if(!file.exists()){
 			file.mkdirs();
 		}
 		
 		Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-		
-		String newFileName, originalFileExtension, contentType;
-		
+		List<BoardFile> fileList = new ArrayList<>();
+
 		/* 파일 형식 확인 및 이미지 확장자 지정 */
 		while(iterator.hasNext()){
+
 			List<MultipartFile> list = multipartHttpServletRequest.getFiles(iterator.next());
+
 			for (MultipartFile multipartFile : list){
-				if(!multipartFile.isEmpty()){
-					contentType = multipartFile.getContentType();
-					if(ObjectUtils.isEmpty(contentType)){
-						break;
-					}
-					else{
-						if(contentType.contains("image/jpeg")) {
+				if(!multipartFile.isEmpty()) {
+					String contentType = multipartFile.getContentType();
+					String originalFileExtension = "";
+
+					if (!ObjectUtils.isEmpty(contentType)) {
+						if (contentType.contains("image/jpeg")) {
 							originalFileExtension = ".jpg";
-						}
-						else if(contentType.contains("image/png")) {
+						} else if (contentType.contains("image/png")) {
 							originalFileExtension = ".png";
-						}
-						else if(contentType.contains("image/gif")) {
+						} else if (contentType.contains("image/gif")) {
 							originalFileExtension = ".gif";
-						}
-						else{
+						} else {
 							break;
 						}
+
+						String newFileName = System.nanoTime() + originalFileExtension;
+						BoardFile boardFile = new BoardFile();
+						boardFile.setId(idx);
+						boardFile.setFileSize(multipartFile.getSize());
+						boardFile.setPhotoPath(path + "/" + newFileName);
+						fileList.add(boardFile);
+
+						multipartFile.transferTo(new File(path + "/" + newFileName));
 					}
-					
-					newFileName = System.nanoTime() + originalFileExtension;
-					BoardFile boardFile = new BoardFile();
-					boardFile.setId(idx);
-					boardFile.setFileSize(multipartFile.getSize());
-					//boardFile.setOriginalFileName(multipartFile.getOriginalFilename());
-					boardFile.setPhotoPath(path + "/" + newFileName);
-					fileList.add(boardFile);
-					
-					file = new File(path + "/" + newFileName);
-					multipartFile.transferTo(file);
 				}
 			}
 		}
+
 		return fileList;
 	}
 	

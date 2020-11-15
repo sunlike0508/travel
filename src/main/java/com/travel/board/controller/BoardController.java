@@ -1,6 +1,6 @@
 package com.travel.board.controller;
 
-import com.travel.board.model.BoardBase;
+import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,33 +19,33 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/{creatorId}")
-    public ResponseEntity<List<BoardBase>> selectBoardList(@PathVariable("creatorId") String creatorId) {
+    public ResponseEntity<List<BoardBaseDTO>> selectBoardList(@PathVariable("creatorId") String creatorId) {
 
-        List<BoardBase> boardBases = boardService.selectBoardList(creatorId);
+        List<BoardBaseDTO> boardBaseDTOs = boardService.selectBoardList(creatorId);
 
-        return new ResponseEntity<>(boardBases, HttpStatus.OK);
+        return new ResponseEntity<>(boardBaseDTOs, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<BoardBase> insertBoard(@RequestBody BoardBase boardBase,
+    public ResponseEntity<BoardBaseDTO> insertBoard(@RequestBody BoardBaseDTO boardBaseDTO,
                                                  MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 
-        BoardBase savedBoardBase = boardService.insertBoard(boardBase, multipartHttpServletRequest);
+        BoardBaseDTO savedBoardDTOBase = boardService.insertBoard(boardBaseDTO, multipartHttpServletRequest);
 
-        return new ResponseEntity(savedBoardBase, HttpStatus.OK);
+        return new ResponseEntity(savedBoardDTOBase, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<BoardBase> updateBoard(@RequestBody BoardBase boardBase,
+    public ResponseEntity<BoardBaseDTO> updateBoard(@RequestBody BoardBaseDTO boardBaseDTO,
                                                  MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
 
-        BoardBase updatedBoardBase = boardService.updateBoard(boardBase, multipartHttpServletRequest);
+        BoardBaseDTO updatedBoardBase = boardService.updateBoard(boardBaseDTO, multipartHttpServletRequest);
 
         return new ResponseEntity(updatedBoardBase, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idx}")
-    public ResponseEntity<BoardBase> deleteBoard(@PathVariable("idx") long idx) {
+    public ResponseEntity<BoardBaseDTO> deleteBoard(@PathVariable("idx") long idx) {
 
         boardService.deleteBoard(idx);
 

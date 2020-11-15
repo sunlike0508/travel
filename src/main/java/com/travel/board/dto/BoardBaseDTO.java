@@ -1,0 +1,34 @@
+package com.travel.board.dto;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+public class BoardBaseDTO {
+
+	private long id;
+
+	private String title;
+
+	private String location;
+
+	private String contents;
+
+	private String parties;
+
+	private String creatorId;
+
+	private LocalDateTime startDate;
+
+	private LocalDateTime endDate;
+
+	private String mainPhotoPath;
+
+	private List<BoardDetailDTO> boardDetailDTOs;
+}
