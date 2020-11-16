@@ -27,8 +27,6 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardBaseConverter boardBaseConverter;
 
-    private final FileUtils fileUtils;
-
     @Override
     public List<BoardBaseDTO> selectBoardList(String creatorId) {
 
@@ -41,26 +39,16 @@ public class BoardServiceImpl implements BoardService {
     public BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO, MultipartHttpServletRequest multipartHttpServletRequest)
             throws Exception {
 
-        BoardBase convertedBoardBase = boardBaseConverter.convertDTO(boardBaseDTO);
+        BoardBase convertedBoardBase = boardBaseConverter.convertDTO(boardBaseDTO, multipartHttpServletRequest);
 
         BoardBase savedBoardBase = boardBaseRepository.save(convertedBoardBase);
 
-        BoardBaseDTO convertedBoardBaseDTO = boardBaseConverter.convert(savedBoardBase);
-
-//        List<BoardFile> boardFiles = fileUtils.parseFileInfo(savedBoardBase.getId(), multipartHttpServletRequest);
-//
-//        if(!CollectionUtils.isEmpty(boardFiles)){
-//            for(BoardFile boardFile : boardFiles) {
-//                boardFileRepository.save(boardFile);
-//            }
-//        }
-
-        return convertedBoardBaseDTO;
+        return boardBaseConverter.convert(savedBoardBase);
     }
 
     @Override
     public BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
-        BoardBase covertedBoardBase = boardBaseConverter.convertDTO(boardBaseDTO);
+        BoardBase covertedBoardBase = boardBaseConverter.convertDTO(boardBaseDTO, multipartHttpServletRequest);
 
         BoardBase updatedBoardBase = boardBaseRepository.save(covertedBoardBase);
 

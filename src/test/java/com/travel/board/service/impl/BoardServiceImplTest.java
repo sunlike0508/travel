@@ -7,7 +7,11 @@ import com.travel.board.service.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import java.util.NoSuchElementException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class BoardServiceImplTest {
@@ -63,13 +68,21 @@ class BoardServiceImplTest {
         boardBaseDTO.setCreatorId("sunlike0301");
         boardBaseDTO.setStartDate(LocalDateTime.now());
         boardBaseDTO.setEndDate(LocalDateTime.now());
-        boardBaseDTO.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO, null);
+        MockMultipartHttpServletRequest multipartHttpServletRequest = new MockMultipartHttpServletRequest();
+        multipartHttpServletRequest.setRequestURI("/src/test/resources/file/new/");
+
+        FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/file/origin/test.jpg"));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("test", "test.jpg", "jps", fileInputStream);
+
+        multipartHttpServletRequest.addFile(mockMultipartFile);
+
+        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO, multipartHttpServletRequest);
 
         assertThat(boardBaseDTO.getTitle(), is(savedBoardBaseDTO.getTitle()));
         assertThat(boardBaseDTO.getLocation(), is(savedBoardBaseDTO.getLocation()));
         assertThat(boardBaseDTO.getContents(), is(savedBoardBaseDTO.getContents()));
+        assertTrue(new File(savedBoardBaseDTO.getMainPhotoPath()).exists());
     }
 
     @Test

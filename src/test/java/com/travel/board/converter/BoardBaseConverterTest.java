@@ -9,7 +9,13 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,7 +50,7 @@ class BoardBaseConverterTest {
     }
 
     @Test
-    void convert_BoardBase를_BoardBaseDTO로_convert() {
+    void convert_BoardBase를_BoardBaseDTO로_convert() throws Exception {
 
         BoardBaseDTO boardBaseDTO = new BoardBaseDTO();
         boardBaseDTO.setTitle("글 작성");
@@ -54,13 +60,20 @@ class BoardBaseConverterTest {
         boardBaseDTO.setCreatorId("sunlike0301");
         boardBaseDTO.setStartDate(LocalDateTime.now());
         boardBaseDTO.setEndDate(LocalDateTime.now());
-        boardBaseDTO.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBase boardBase = boardBaseConverter.convertDTO(boardBaseDTO);
+        MockMultipartHttpServletRequest multipartHttpServletRequest = new MockMultipartHttpServletRequest();
+        multipartHttpServletRequest.setRequestURI("/src/test/resources/file/new/");
+
+        FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/file/origin/test.jpg"));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("test", "test.jpg", "jps", fileInputStream);
+
+        multipartHttpServletRequest.addFile(mockMultipartFile);
+
+        BoardBase boardBase = boardBaseConverter.convertDTO(boardBaseDTO, multipartHttpServletRequest);
 
         assertThat(boardBase.getId(), is(boardBaseDTO.getId()));
         assertThat(boardBase.getTitle(), is(boardBaseDTO.getTitle()));
-        assertThat(boardBase.getMainPhotoPath(), is(boardBaseDTO.getMainPhotoPath()));
+        assertTrue(new File(boardBase.getMainPhotoPath()).exists());
 
     }
 }
