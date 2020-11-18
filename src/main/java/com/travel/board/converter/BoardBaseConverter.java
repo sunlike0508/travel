@@ -8,6 +8,7 @@ import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -27,7 +28,7 @@ public class BoardBaseConverter implements Converter<BoardBase, BoardBaseDTO> {
     public BoardBaseDTO convert(BoardBase boardBase) {
 
         BoardBaseDTO boardBaseDTO = modelMapper.map(boardBase, BoardBaseDTO.class);
-        // FileInputStream fileInputStream = new FileInputStream(new File(boardBase.getMainPhotoPath()));
+        //FileInputStream fileInputStream = new FileInputStream(new File(boardBase.getMainPhotoPath()));
         // 파일 다운로드 기능 추가
         //boardBaseDTO.setMultipartFile();
 
@@ -36,11 +37,13 @@ public class BoardBaseConverter implements Converter<BoardBase, BoardBaseDTO> {
         return boardBaseDTO;
     }
 
-    public BoardBase convertDTO(BoardBaseDTO boardBaseDTO, MultipartHttpServletRequest multipartHttpServletRequest)
-            throws Exception {
+    public BoardBase convertDTO(BoardBaseDTO boardBaseDTO) throws Exception {
 
         BoardBase boardBase = modelMapper.map(boardBaseDTO, BoardBase.class);
-        boardBase.setMainPhotoPath(fileUtils.parseFileInfo(multipartHttpServletRequest));
+
+        if(!ObjectUtils.isEmpty(boardBaseDTO.getMultipartFile())){
+            boardBase.setMainPhotoPath(fileUtils.saveMultipartFile(boardBaseDTO.getMultipartFile()));
+        }
 
         // TODO : boardBaseDetail, boardFile 가져오기
 

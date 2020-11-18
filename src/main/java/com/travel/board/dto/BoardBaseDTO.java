@@ -10,24 +10,14 @@ import java.util.List;
 public class BoardBaseDTO {
 
 	private long id;
-
 	private String title;
-
 	private String location;
-
 	private String contents;
-
 	private String parties;
-
 	private String creatorId;
-
 	private LocalDateTime startDate;
-
 	private LocalDateTime endDate;
-
 	private String mainPhotoPath;
-
 	private List<BoardDetailDTO> boardDetailDTOs;
-	
 	private MultipartFile multipartFile;
 }

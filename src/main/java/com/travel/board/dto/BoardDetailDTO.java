@@ -18,7 +18,7 @@ public class BoardDetailDTO {
 
 	private String board_base_id;
 
-	private String travelDate;
+	private LocalDateTime travelDate;
 
 	private List<BoardFileDTO> boardFileDTOs;
 }

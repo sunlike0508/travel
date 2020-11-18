@@ -69,15 +69,11 @@ class BoardServiceImplTest {
         boardBaseDTO.setStartDate(LocalDateTime.now());
         boardBaseDTO.setEndDate(LocalDateTime.now());
 
-        MockMultipartHttpServletRequest multipartHttpServletRequest = new MockMultipartHttpServletRequest();
-        multipartHttpServletRequest.setRequestURI("/src/test/resources/file/new/");
-
         FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/file/origin/test.jpg"));
         MockMultipartFile mockMultipartFile = new MockMultipartFile("test", "test.jpg", "jps", fileInputStream);
+        boardBaseDTO.setMultipartFile(mockMultipartFile);
 
-        multipartHttpServletRequest.addFile(mockMultipartFile);
-
-        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO, multipartHttpServletRequest);
+        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO);
 
         assertThat(boardBaseDTO.getTitle(), is(savedBoardBaseDTO.getTitle()));
         assertThat(boardBaseDTO.getLocation(), is(savedBoardBaseDTO.getLocation()));
@@ -97,7 +93,7 @@ class BoardServiceImplTest {
         boardBaseDTO.setEndDate(LocalDateTime.now());
         boardBaseDTO.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
-        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO, null);
+        BoardBaseDTO savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO);
 
         BoardBase findBoardBase = boardBaseRepository.findById(savedBoardBaseDTO.getId()).get();
 

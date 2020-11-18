@@ -9,9 +9,9 @@ import java.util.List;
 public interface BoardService {
     List<BoardBaseDTO> selectBoardList(String creatorId);
 
-    BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
+    BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO) throws Exception;
 
-    BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
+    BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO) throws Exception;
 
     void deleteBoard(long idx);
 }

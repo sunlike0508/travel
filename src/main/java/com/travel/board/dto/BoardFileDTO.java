@@ -1,13 +1,8 @@
 package com.travel.board.dto;
 
-import com.travel.board.model.BoardDetail;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -23,4 +18,5 @@ public class BoardFileDTO {
 
 	private String creatorId;
 
+	private MultipartFile multipartFile;
 }

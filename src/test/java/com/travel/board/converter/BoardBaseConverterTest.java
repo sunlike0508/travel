@@ -61,15 +61,12 @@ class BoardBaseConverterTest {
         boardBaseDTO.setStartDate(LocalDateTime.now());
         boardBaseDTO.setEndDate(LocalDateTime.now());
 
-        MockMultipartHttpServletRequest multipartHttpServletRequest = new MockMultipartHttpServletRequest();
-        multipartHttpServletRequest.setRequestURI("/src/test/resources/file/new/");
 
         FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/file/origin/test.jpg"));
         MockMultipartFile mockMultipartFile = new MockMultipartFile("test", "test.jpg", "jps", fileInputStream);
+        boardBaseDTO.setMultipartFile(mockMultipartFile);
 
-        multipartHttpServletRequest.addFile(mockMultipartFile);
-
-        BoardBase boardBase = boardBaseConverter.convertDTO(boardBaseDTO, multipartHttpServletRequest);
+        BoardBase boardBase = boardBaseConverter.convertDTO(boardBaseDTO);
 
         assertThat(boardBase.getId(), is(boardBaseDTO.getId()));
         assertThat(boardBase.getTitle(), is(boardBaseDTO.getTitle()));

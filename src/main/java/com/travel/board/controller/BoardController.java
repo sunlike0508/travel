@@ -27,19 +27,17 @@ public class BoardController {
     }
 
     @PostMapping
-    public ResponseEntity<BoardBaseDTO> insertBoard(@RequestBody BoardBaseDTO boardBaseDTO,
-                                                 MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+    public ResponseEntity<BoardBaseDTO> insertBoard(@RequestBody BoardBaseDTO boardBaseDTO) throws Exception {
 
-        BoardBaseDTO savedBoardDTOBase = boardService.insertBoard(boardBaseDTO, multipartHttpServletRequest);
+        BoardBaseDTO savedBoardDTOBase = boardService.insertBoard(boardBaseDTO);
 
         return new ResponseEntity(savedBoardDTOBase, HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<BoardBaseDTO> updateBoard(@RequestBody BoardBaseDTO boardBaseDTO,
-                                                 MultipartHttpServletRequest multipartHttpServletRequest) throws Exception {
+    public ResponseEntity<BoardBaseDTO> updateBoard(@RequestBody BoardBaseDTO boardBaseDTO) throws Exception {
 
-        BoardBaseDTO updatedBoardBase = boardService.updateBoard(boardBaseDTO, multipartHttpServletRequest);
+        BoardBaseDTO updatedBoardBase = boardService.updateBoard(boardBaseDTO);
 
         return new ResponseEntity(updatedBoardBase, HttpStatus.OK);
     }
