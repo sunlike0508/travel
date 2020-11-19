@@ -1,35 +1,55 @@
 package com.travel.board.file;
 
+import com.travel.CommonMakeModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockMultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileUtilsTest {
 
-    FileUtils fileUtils;
+    private FileUtils fileUtils;
+
+    private CommonMakeModel commonMakeModel;
 
     @BeforeEach
     public void setUp() {
         fileUtils = new FileUtils();
+        commonMakeModel = new CommonMakeModel();
     }
 
     @Test
-    public void parseFileInfo_테스트() throws Exception {
+    public void saveMultipartFile_이미_파일이_존재하는_경우() throws IOException {
 
         // given
-        FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/file/origin/test.jpg"));
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("test", "test.jpg", "jps", fileInputStream);
+        String path = "images/";
+        String fileName = "469862237954100_test";
+        String type = "jpg";
+        MockMultipartFile mockMultipartFile = commonMakeModel.getMockMultipartFile(path, fileName, type);
+
+        // expected
+        assertTrue(fileUtils.isExistFile(mockMultipartFile));
+    }
+
+    @Test
+    public void saveMultipartFile_새로_파일_생성하는_경우_테스트() throws IOException {
+
+        // given
+        String path = "src/test/resources/file/origin/";
+        String fileName = "test";
+        String type = "jpg";
+        MockMultipartFile mockMultipartFile = commonMakeModel.getMockMultipartFile(path, fileName, type);
 
         // when
-        String path = fileUtils.saveMultipartFile(mockMultipartFile);
+        String savedPath = fileUtils.saveMultipartFile(mockMultipartFile);
 
         // then
-        assertTrue(new File(path).exists());
+        assertTrue(new File(savedPath).exists());
     }
 }
