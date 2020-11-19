@@ -1,6 +1,7 @@
 package com.travel.board.service.impl;
 
 import com.travel.board.converter.BoardBaseConverter;
+import com.travel.board.converter.BoardBaseDTOConverter;
 import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.file.FileUtils;
 import com.travel.board.model.BoardBase;
@@ -26,6 +27,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardFileRepository boardFileRepository;
 
     private final BoardBaseConverter boardBaseConverter;
+    private final BoardBaseDTOConverter boardBaseDTOConverter;
 
     @Override
     public List<BoardBaseDTO> selectBoardList(String creatorId) {
@@ -36,19 +38,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO)
-            throws Exception {
+    public BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO) {
 
-        BoardBase convertedBoardBase = boardBaseConverter.convertDTO(boardBaseDTO);
+        BoardBase convertedBoardBase = boardBaseDTOConverter.convert(boardBaseDTO);
 
         BoardBase savedBoardBase = boardBaseRepository.save(convertedBoardBase);
+        // TODO : board_detail 저장
+        // TODO : board_file 저장
 
-        return boardBaseConverter.convert(savedBoardBase);
+        // TODO : id를 가지고 다사 조회 하든가 아님 dto로 변환해서 return 하든가 결정
+        return new BoardBaseDTO();
     }
 
     @Override
-    public BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO) throws Exception {
-        BoardBase covertedBoardBase = boardBaseConverter.convertDTO(boardBaseDTO);
+    public BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO) {
+        BoardBase covertedBoardBase = boardBaseDTOConverter.convert(boardBaseDTO);
 
         BoardBase updatedBoardBase = boardBaseRepository.save(covertedBoardBase);
 

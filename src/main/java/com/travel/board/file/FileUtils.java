@@ -5,6 +5,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 @Component
 public class FileUtils {
 
-	public String saveMultipartFile(MultipartFile multipartFile) throws Exception{
+	public String saveMultipartFile(MultipartFile multipartFile) throws IOException {
 
 		/* 파일이 업로드될 폴더를 생성 */
 		String path = "images/" + ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -28,14 +29,14 @@ public class FileUtils {
 		String filePath = null;
 
 		if(!ObjectUtils.isEmpty(contentType)) {
-			filePath = path + "/" + System.nanoTime() + multipartFile.getOriginalFilename();
+			filePath = path + "/" + System.nanoTime() + "_"+ multipartFile.getOriginalFilename();
 			multipartFile.transferTo(new File(filePath));
 		}
 
 		return filePath;
 	}
 	
-	public List<String> saveMultipartFiles(List<MultipartFile> multipartFiles) throws Exception{
+	public List<String> saveMultipartFiles(List<MultipartFile> multipartFiles) throws IOException {
 
 		if(ObjectUtils.isEmpty(multipartFiles)){
 			return null;

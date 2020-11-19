@@ -1,15 +1,18 @@
 package com.travel.board.controller;
 
+import com.travel.board.factory.ApiResponse;
 import com.travel.board.dto.BoardBaseDTO;
+import com.travel.board.factory.ApiResponseFactory;
 import com.travel.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/v1/board")
@@ -19,19 +22,25 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/{creatorId}")
-    public ResponseEntity<List<BoardBaseDTO>> selectBoardList(@PathVariable("creatorId") String creatorId) {
+    public ResponseEntity<ApiResponse> selectBoardList(@PathVariable("creatorId") String creatorId) {
 
         List<BoardBaseDTO> boardBaseDTOs = boardService.selectBoardList(creatorId);
 
-        return new ResponseEntity<>(boardBaseDTOs, HttpStatus.OK);
+        return ApiResponseFactory.createSuccessResponse(boardBaseDTOs);
     }
 
     @PostMapping
-    public ResponseEntity<BoardBaseDTO> insertBoard(@RequestBody BoardBaseDTO boardBaseDTO) throws Exception {
+    public ResponseEntity<ApiResponse> insertBoard(@RequestBody BoardBaseDTO boardBaseDTO) {
 
-        BoardBaseDTO savedBoardDTOBase = boardService.insertBoard(boardBaseDTO);
+        BoardBaseDTO savedBoardBaseDTO = null;
+        try {
+            savedBoardBaseDTO = boardService.insertBoard(boardBaseDTO);
+        } catch (Exception e) {
+            log.debug("게시글 생성 실패 : " + e.getMessage());
+            ApiResponseFactory.createFailResponse();
+        }
 
-        return new ResponseEntity(savedBoardDTOBase, HttpStatus.OK);
+        return ApiResponseFactory.createSuccessResponse(savedBoardBaseDTO);
     }
 
     @PatchMapping

@@ -4,7 +4,6 @@ import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.file.FileUtils;
 import com.travel.board.model.BoardBase;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ public class BoardBaseConverter implements Converter<BoardBase, BoardBaseDTO> {
     private final ModelMapper modelMapper;
     private final FileUtils fileUtils;
 
-    @SneakyThrows
     @Override
     public BoardBaseDTO convert(BoardBase boardBase) {
 
@@ -35,18 +33,5 @@ public class BoardBaseConverter implements Converter<BoardBase, BoardBaseDTO> {
         // TODO : boardBaseDetail, boardFile 가져오기
 
         return boardBaseDTO;
-    }
-
-    public BoardBase convertDTO(BoardBaseDTO boardBaseDTO) throws Exception {
-
-        BoardBase boardBase = modelMapper.map(boardBaseDTO, BoardBase.class);
-
-        if(!ObjectUtils.isEmpty(boardBaseDTO.getMultipartFile())){
-            boardBase.setMainPhotoPath(fileUtils.saveMultipartFile(boardBaseDTO.getMultipartFile()));
-        }
-
-        // TODO : boardBaseDetail, boardFile 가져오기
-
-        return boardBase;
     }
 }
