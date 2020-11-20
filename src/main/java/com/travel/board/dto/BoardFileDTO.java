@@ -10,7 +10,7 @@ public class BoardFileDTO {
 
 	private long id;
 
-	private String board_detail_id;
+	private String boardDetailId;
 
 	private String photoPath;
 

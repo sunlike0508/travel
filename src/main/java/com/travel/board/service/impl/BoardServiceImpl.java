@@ -54,9 +54,12 @@ public class BoardServiceImpl implements BoardService {
 
         // TODO : board_detail 저장
         List<BoardDetailDTO> boardDetailDTOS = boardBaseDTO.getBoardDetailDTOs();
-        List<BoardDetail> boardDetails = boardDetailConverter.convert(boardDetailDTOS);
-        boardDetailRepository.saveAll(boardDetails);
-        //List<BoardDetail> savedBoardDetails = boardDetailRepository.saveAll(boardDetails);
+        boardDetailDTOS.stream().forEach(boardDetailDTO -> boardDetailDTO.setBoardBaseId(savedBoardBase.getId()));
+
+        List<BoardDetail> boardDetails = boardDetailConverter.convertToDatabaseColumn(boardDetailDTOS);
+        boardDetails.stream().forEach(boardDetail -> boardDetail.setBoardBase(savedBoardBase));
+
+        List<BoardDetail> savedBoardDetails = boardDetailRepository.saveAll(boardDetails);
 
 
         // TODO : board_file 저장

@@ -3,15 +3,12 @@ package com.travel.board.converter;
 import com.travel.CommonMakeModel;
 import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.model.BoardBase;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
