@@ -1,7 +1,6 @@
 package com.travel.board.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 @Table(name="board_file")
 @Data
 @Entity
-@NoArgsConstructor
 public class BoardFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

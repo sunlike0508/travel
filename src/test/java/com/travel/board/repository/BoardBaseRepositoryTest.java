@@ -1,6 +1,8 @@
 package com.travel.board.repository;
 
 import com.travel.board.model.BoardBase;
+import com.travel.board.model.BoardDetail;
+import com.travel.board.model.BoardFile;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -96,7 +98,23 @@ class BoardBaseRepositoryTest {
                 = assertThrows(NoSuchElementException.class, () -> boardBaseRepository.findById(savedBoardBase.getId()).get());
 
         assertThat(expectedException.getMessage(), is("No value present"));
+    }
 
+    @Test
+    public void 글_detail_file_전체_조회_테스트() {
+        BoardBase boardBase = boardBaseRepository.findById(112L).get();
 
+        System.out.println(boardBase.toString());
+
+        List<BoardDetail> boardDetails = boardBase.getBoardDetails();
+
+        for(BoardDetail boardDetail : boardDetails) {
+
+            System.out.println(boardDetail.toString());
+
+            List<BoardFile> boardFiles = boardDetail.getBoardFiles();
+
+            boardFiles.stream().forEach(boardFile -> System.out.println(boardFile.toString()));
+        }
     }
 }

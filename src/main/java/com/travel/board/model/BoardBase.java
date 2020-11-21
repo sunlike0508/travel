@@ -1,17 +1,21 @@
 package com.travel.board.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.modelmapper.internal.util.ToStringBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name="board_base")
-@Data
+@Getter
+@Setter
+@ToString(exclude = "boardDetails")
 @Entity
-@NoArgsConstructor
 public class BoardBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
