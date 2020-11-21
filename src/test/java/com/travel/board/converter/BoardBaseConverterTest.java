@@ -46,7 +46,7 @@ class BoardBaseConverterTest {
         boardBaseDTO.setEndDate(LocalDateTime.now());
         boardBaseDTO.setMultipartFile(commonMakeModel.getMockMultipartFile(path, fileName, type));
 
-        BoardBase boardBase = boardBaseConverter.convert(boardBaseDTO);
+        BoardBase boardBase = boardBaseConverter.convertToDatabaseColumn(boardBaseDTO);
 
         assertThat(boardBase.getTitle(), is(boardBaseDTO.getTitle()));
         assertTrue(new File(boardBase.getMainPhotoPath()).exists());

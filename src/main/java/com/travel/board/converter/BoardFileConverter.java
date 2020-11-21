@@ -4,30 +4,36 @@ import com.travel.board.dto.BoardFileDTO;
 import com.travel.board.file.FileUtils;
 import com.travel.board.model.BoardFile;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.AttributeConverter;
 
 
 @Component
 @RequiredArgsConstructor
-public class BoardFileConverter implements Converter<List<BoardFileDTO>, List<BoardFile>> {
+public class BoardFileConverter implements AttributeConverter<BoardFileDTO, BoardFile> {
 
     private final ModelMapper modelMapper;
     private final FileUtils fileUtils;
 
+    @SneakyThrows
     @Override
-    public List<BoardFile> convert(List<BoardFileDTO> boardFileDTOs) {
+    public BoardFile convertToDatabaseColumn(BoardFileDTO boardFileDTO) {
+        BoardFile boardFile = modelMapper.map(boardFileDTO, BoardFile.class);
 
-        List<BoardFile> boardFiles = new ArrayList<>();
-
-        for(BoardFileDTO boardFileDTO : boardFileDTOs) {
-            boardFiles.add(modelMapper.map(boardFileDTO, BoardFile.class));
+        if(!ObjectUtils.isEmpty(boardFileDTO.getMultipartFile())
+                && !fileUtils.isExistFile(boardFileDTO.getMultipartFile())){
+            boardFile.setPhotoPath(fileUtils.saveMultipartFile(boardFileDTO.getMultipartFile()));
         }
 
-        return boardFiles;
+        return boardFile;
+    }
+
+    @Override
+    public BoardFileDTO convertToEntityAttribute(BoardFile boardFile) {
+        return null;
     }
 }

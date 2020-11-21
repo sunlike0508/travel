@@ -26,9 +26,6 @@ public class BoardFile {
 	@Column(name = "file_size", nullable=false)
 	private long fileSize;
 
-	@Column(name = "creator_id", nullable=false)
-	private String creatorId;
-
 	@Column(name =  "create_at", nullable=false)
 	@CreationTimestamp
 	private LocalDateTime createdDatetime;

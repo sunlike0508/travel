@@ -1,41 +1,31 @@
 package com.travel.board.converter;
 
 import com.travel.board.dto.BoardDetailDTO;
-import com.travel.board.file.FileUtils;
-import com.travel.board.model.BoardBase;
 import com.travel.board.model.BoardDetail;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.AttributeConverter;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Component
 @RequiredArgsConstructor
-public class BoardDetailConverter implements AttributeConverter<List<BoardDetailDTO>, List<BoardDetail>> {
+public class BoardDetailConverter implements AttributeConverter<BoardDetailDTO, BoardDetail> {
 
     private final ModelMapper modelMapper;
-    private final FileUtils fileUtils;
 
     @Override
-    public List<BoardDetail> convertToDatabaseColumn(List<BoardDetailDTO> boardDetailDTOs) {
+    public BoardDetail convertToDatabaseColumn(BoardDetailDTO boardDetailDTO) {
 
-        List<BoardDetail> boardDetails = new ArrayList<>();
+        BoardDetail boardDetail = modelMapper.map(boardDetailDTO, BoardDetail.class);
 
-        for(BoardDetailDTO boardDetailDTO : boardDetailDTOs) {
-            boardDetails.add(modelMapper.map(boardDetailDTO, BoardDetail.class));
-        }
-
-        return boardDetails;
+        return boardDetail;
     }
 
+
     @Override
-    public List<BoardDetailDTO> convertToEntityAttribute(List<BoardDetail> dbData) {
+    public BoardDetailDTO convertToEntityAttribute(BoardDetail boardDetail) {
         return null;
     }
 }

@@ -10,13 +10,11 @@ public class BoardFileDTO {
 
 	private long id;
 
-	private String boardDetailId;
+	private long boardDetailId;
 
 	private String photoPath;
 
 	private long fileSize;
-
-	private String creatorId;
 
 	private MultipartFile multipartFile;
 }

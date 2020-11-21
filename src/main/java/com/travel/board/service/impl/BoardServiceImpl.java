@@ -1,6 +1,5 @@
 package com.travel.board.service.impl;
 
-import com.travel.board.converter.BoardBaseDTOConverter;
 import com.travel.board.converter.BoardBaseConverter;
 import com.travel.board.converter.BoardDetailConverter;
 import com.travel.board.converter.BoardFileConverter;
@@ -19,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,7 +32,6 @@ public class BoardServiceImpl implements BoardService {
     private final BoardDetailConverter boardDetailConverter;
     private final BoardFileConverter boardFileConverter;
 
-    private final BoardBaseDTOConverter boardBaseDTOConverter;
 
     @Override
     public List<BoardBaseDTO> selectBoardList(String creatorId) {
@@ -49,38 +46,40 @@ public class BoardServiceImpl implements BoardService {
     public BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO) {
 
         // board_base 저장
-        BoardBase convertedBoardBase = boardBaseConverter.convert(boardBaseDTO);
-        BoardBase savedBoardBase = boardBaseRepository.save(convertedBoardBase);
+        BoardBase boardBase = boardBaseConverter.convertToDatabaseColumn(boardBaseDTO);
+        BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
 
-        // TODO : board_detail 저장
+        // board_detail 저장
         List<BoardDetailDTO> boardDetailDTOS = boardBaseDTO.getBoardDetailDTOs();
         boardDetailDTOS.stream().forEach(boardDetailDTO -> boardDetailDTO.setBoardBaseId(savedBoardBase.getId()));
 
-        List<BoardDetail> boardDetails = boardDetailConverter.convertToDatabaseColumn(boardDetailDTOS);
-        boardDetails.stream().forEach(boardDetail -> boardDetail.setBoardBase(savedBoardBase));
-
-        List<BoardDetail> savedBoardDetails = boardDetailRepository.saveAll(boardDetails);
-
-
-        // TODO : board_file 저장
         for(BoardDetailDTO boardDetailDTO : boardDetailDTOS) {
+
+            BoardDetail boardDetail = boardDetailConverter.convertToDatabaseColumn(boardDetailDTO);
+            BoardDetail savedBoardDetail = boardDetailRepository.save(boardDetail);
+
+            // board_file 저장
             List<BoardFileDTO> boardFileDTOS = boardDetailDTO.getBoardFileDTOs();
-            List<BoardFile> boardFiles = boardFileConverter.convert(boardFileDTOS);
-            boardFileRepository.saveAll(boardFiles);
-            //List<BoardFile> savedBoardFiles = boardFileRepository.saveAll(boardFiles);
+            boardFileDTOS.stream().forEach(boardFileDTO -> boardFileDTO.setBoardDetailId(savedBoardDetail.getId()));
+
+
+            for(BoardFileDTO boardFileDTO : boardFileDTOS) {
+                BoardFile boardFile = boardFileConverter.convertToDatabaseColumn(boardFileDTO);
+                boardFileRepository.save(boardFile);
+            }
         }
 
         // TODO : id를 가지고 다사 조회 하든가 아님 dto로 변환해서 return 하든가 결정
-        BoardBase boardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
+        BoardBase findedboardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
         
-        return boardBaseDTOConverter.convert(boardBase);
+        return boardBaseConverter.convertToEntityAttribute(findedboardBase);
     }
 
     @Override
     public BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO) {
-        BoardBase covertedBoardBase = boardBaseConverter.convert(boardBaseDTO);
-
-        BoardBase updatedBoardBase = boardBaseRepository.save(covertedBoardBase);
+//        BoardBase covertedBoardBase = boardBaseConverter.convert(boardBaseDTO);
+//
+//        BoardBase updatedBoardBase = boardBaseRepository.save(covertedBoardBase);
 
         return null;
         //return convertedBoardBaseDTO;
