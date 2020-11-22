@@ -4,7 +4,6 @@ import com.travel.CommonMakeModel;
 import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.dto.BoardDetailDTO;
 import com.travel.board.model.BoardBase;
-import com.travel.board.model.BoardDetail;
 import com.travel.board.repository.BoardBaseRepository;
 import com.travel.board.repository.BoardDetailRepository;
 import com.travel.board.repository.BoardFileRepository;
@@ -18,8 +17,6 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAmount;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -91,16 +88,11 @@ class BoardBaseConverterTest {
     public void BoardBase를_BoardBaseDTO를_convert() {
         BoardBase findedboardBase = boardBaseRepository.findById(112L).get();
 
-        List<BoardDetail> boardDetails = boardDetailRepository.findAllByBoardBaseId(findedboardBase.getId());
-
-        System.out.println("111");
-        System.out.println(boardDetails.get(0).toString());
-
-        findedboardBase.setBoardDetails(boardDetails);
-
         BoardBaseDTO boardBaseDTO = boardBaseConverter.convertToEntityAttribute(findedboardBase);
 
-        System.out.println("222");
         System.out.println(boardBaseDTO.toString());
+
+        assertThat(boardBaseDTO.getBoardDetails().get(0).getBoardFiles().size(), is(3));
+        assertThat(boardBaseDTO.getBoardDetails().get(1).getBoardFiles().size(), is(3));
     }
 }

@@ -27,7 +27,7 @@ class BoardFileRepositoryTest {
         boardFile.setFileSize(100);
         BoardFile savedBoardFile = boardFileRepository.save(boardFile);
 
-        assertThat(savedBoardFile.getPhotoPath(), is("images/598785481922300_test.jpg"));
+        assertThat(savedBoardFile.getPhotoPath(), is("images/469862237954100_test.jpg"));
         assertThat(savedBoardFile.getFileSize(), is(100L));
     }
 }

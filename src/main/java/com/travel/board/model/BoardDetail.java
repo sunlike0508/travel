@@ -1,6 +1,6 @@
 package com.travel.board.model;
 
-import lombok.Data;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,6 +32,6 @@ public class BoardDetail {
 	@CreationTimestamp
 	private LocalDateTime createdDatetime;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "boardDetail", cascade=CascadeType.ALL)
-	private List<BoardFile> boardFiles;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "boardDetail", cascade=CascadeType.ALL)
+	private List<BoardFile> boardFiles = Lists.newArrayList();
 }

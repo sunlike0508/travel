@@ -1,6 +1,5 @@
 package com.travel.board.dto;
 
-import com.google.common.collect.Lists;
 import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;

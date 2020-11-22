@@ -69,7 +69,6 @@ public class BoardServiceImpl implements BoardService {
             }
         }
 
-        // TODO : id를 가지고 다사 조회 하든가 아님 dto로 변환해서 return 하든가 결정
         BoardBase findedboardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
         
         return boardBaseConverter.convertToEntityAttribute(findedboardBase);

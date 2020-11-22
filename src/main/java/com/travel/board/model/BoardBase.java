@@ -49,6 +49,6 @@ public class BoardBase {
 	@CreationTimestamp
 	private LocalDateTime createdDatetime;
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "boardBase", cascade=CascadeType.ALL)
-	private List<BoardDetail> boardDetails;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "boardBase", cascade=CascadeType.ALL)
+	private List<BoardDetail> boardDetails = Lists.newArrayList();
 }
