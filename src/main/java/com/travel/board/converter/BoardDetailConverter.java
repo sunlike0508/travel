@@ -18,9 +18,7 @@ public class BoardDetailConverter implements AttributeConverter<BoardDetailDTO, 
     @Override
     public BoardDetail convertToDatabaseColumn(BoardDetailDTO boardDetailDTO) {
 
-        BoardDetail boardDetail = modelMapper.map(boardDetailDTO, BoardDetail.class);
-
-        return boardDetail;
+        return modelMapper.map(boardDetailDTO, BoardDetail.class);
     }
 
 

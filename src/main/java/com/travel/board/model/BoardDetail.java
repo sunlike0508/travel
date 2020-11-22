@@ -21,7 +21,7 @@ public class BoardDetail {
 	@Column(name = "id")
 	private long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = BoardBase.class, optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="board_base_id")
 	private BoardBase boardBase;
 

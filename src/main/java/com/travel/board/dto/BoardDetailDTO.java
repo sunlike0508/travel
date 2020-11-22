@@ -1,19 +1,16 @@
 package com.travel.board.dto;
 
+import com.google.common.collect.Lists;
 import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder
 public class BoardDetailDTO {
 
 	private long id;
-
 	private long boardBaseId;
-
 	private LocalDateTime travelDate;
-
-	private List<BoardFileDTO> boardFileDTOs;
+	private List<BoardFileDTO> boardFiles;
 }

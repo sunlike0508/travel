@@ -1,6 +1,6 @@
 package com.travel.board.dto;
 
-import lombok.Builder;
+import com.google.common.collect.Lists;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +19,6 @@ public class BoardBaseDTO {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private String mainPhotoPath;
-	private List<BoardDetailDTO> boardDetailDTOs;
+	private List<BoardDetailDTO> boardDetails;
 	private MultipartFile multipartFile;
 }

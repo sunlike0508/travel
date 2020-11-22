@@ -1,11 +1,10 @@
 package com.travel.board.model;
 
-import lombok.Data;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.modelmapper.internal.util.ToStringBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

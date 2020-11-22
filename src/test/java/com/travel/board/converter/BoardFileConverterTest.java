@@ -34,13 +34,14 @@ class BoardFileConverterTest {
         String fileName = "test";
         String type = "jpg";
 
-        BoardFileDTO boardFileDTO = BoardFileDTO.builder().fileSize(100)
-                .multipartFile(commonMakeModel.getMockMultipartFile(path, fileName, type)).build();
+        BoardFileDTO boardFileDTO = new BoardFileDTO();
+        boardFileDTO.setFileSize(100);
+        boardFileDTO.setMultipartFile(commonMakeModel.getMockMultipartFile(path, fileName, type));
 
         BoardFile boardFile = boardFileConverter.convertToDatabaseColumn(boardFileDTO);
 
         assertNotNull(boardFile.getPhotoPath());
-        assertThat(boardFile.getFileSize(), is(100));
+        assertThat(boardFile.getFileSize(), is(100L));
     }
 
     @Test

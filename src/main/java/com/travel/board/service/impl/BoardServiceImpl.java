@@ -50,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
         BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
 
         // board_detail 저장
-        List<BoardDetailDTO> boardDetailDTOS = boardBaseDTO.getBoardDetailDTOs();
+        List<BoardDetailDTO> boardDetailDTOS = boardBaseDTO.getBoardDetails();
         boardDetailDTOS.stream().forEach(boardDetailDTO -> boardDetailDTO.setBoardBaseId(savedBoardBase.getId()));
 
         for(BoardDetailDTO boardDetailDTO : boardDetailDTOS) {
@@ -59,7 +59,7 @@ public class BoardServiceImpl implements BoardService {
             BoardDetail savedBoardDetail = boardDetailRepository.save(boardDetail);
 
             // board_file 저장
-            List<BoardFileDTO> boardFileDTOS = boardDetailDTO.getBoardFileDTOs();
+            List<BoardFileDTO> boardFileDTOS = boardDetailDTO.getBoardFiles();
             boardFileDTOS.stream().forEach(boardFileDTO -> boardFileDTO.setBoardDetailId(savedBoardDetail.getId()));
 
 
