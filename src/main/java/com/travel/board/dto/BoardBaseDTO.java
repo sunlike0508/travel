@@ -18,6 +18,6 @@ public class BoardBaseDTO {
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private String mainPhotoPath;
-	private List<BoardDetailDTO> boardDetails;
 	private MultipartFile multipartFile;
+	private List<BoardDetailDTO> boardDetails;
 }

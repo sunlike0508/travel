@@ -3,6 +3,7 @@ package com.travel.board.converter;
 import com.travel.CommonMakeModel;
 import com.travel.board.dto.BoardBaseDTO;
 import com.travel.board.dto.BoardDetailDTO;
+import com.travel.board.dto.BoardFileDTO;
 import com.travel.board.model.BoardBase;
 import com.travel.board.repository.BoardBaseRepository;
 import com.travel.board.repository.BoardDetailRepository;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class BoardBaseConverterTest {
@@ -68,31 +69,45 @@ class BoardBaseConverterTest {
             BoardDetailDTO boardDetailDTO = new BoardDetailDTO();
             boardDetailDTO.setTravelDate(LocalDateTime.now().plusDays(i));
 
+            List<BoardFileDTO> boardFileDTOS = Lists.newArrayList();
+
+            for(int j = 0 ; j < 2 ; j++) {
+                BoardFileDTO boardFileDTO = new BoardFileDTO();
+                boardFileDTO.setFileSize(100);
+                boardFileDTO.setMultipartFile(commonMakeModel.getMockMultipartFile(path, fileName, type));
+                boardFileDTOS.add(boardFileDTO);
+            }
+            boardDetailDTO.setBoardFiles(boardFileDTOS);
             boardDetailDTOList.add(boardDetailDTO);
         }
 
         boardBaseDTO.setBoardDetails(boardDetailDTOList);
 
-
         BoardBase boardBase = boardBaseConverter.convertToDatabaseColumn(boardBaseDTO);
 
-        System.out.println(boardBase.toString());
-        System.out.println(boardBase.getBoardDetails().toString());
+        boardBase.getBoardDetails().stream().forEach(boardDetail -> System.out.println(boardDetail.getBoardFiles().toString()));
 
         assertThat(boardBase.getTitle(), is(boardBaseDTO.getTitle()));
         assertTrue(new File(boardBase.getMainPhotoPath()).exists());
+
+        BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
+
+        savedBoardBase.getBoardDetails().stream().forEach(boardDetail -> System.out.println(boardDetail.getBoardFiles().toString()));
+
+        assertThat(savedBoardBase.getBoardDetails().size(), is(2));
     }
 
     @Transactional
     @Test
     public void BoardBase를_BoardBaseDTO를_convert() {
-        BoardBase findedboardBase = boardBaseRepository.findById(112L).get();
+        BoardBase findedboardBase = boardBaseRepository.findById(141L).get();
 
         BoardBaseDTO boardBaseDTO = boardBaseConverter.convertToEntityAttribute(findedboardBase);
 
         System.out.println(boardBaseDTO.toString());
 
-        assertThat(boardBaseDTO.getBoardDetails().get(0).getBoardFiles().size(), is(3));
-        assertThat(boardBaseDTO.getBoardDetails().get(1).getBoardFiles().size(), is(3));
+        assertTrue(new File(boardBaseDTO.getMainPhotoPath()).exists());
+        assertThat(boardBaseDTO.getBoardDetails().get(0).getBoardFiles().size(), is(2));
+        assertThat(boardBaseDTO.getBoardDetails().get(1).getBoardFiles().size(), is(2));
     }
 }

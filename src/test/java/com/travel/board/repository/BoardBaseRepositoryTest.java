@@ -37,12 +37,36 @@ class BoardBaseRepositoryTest {
         givenBoardBase.setEndDate(LocalDateTime.now());
         givenBoardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
 
+        BoardDetail boardDetail = new BoardDetail();
+        //boardDetail
+
+
         BoardBase expectedBoardBase = boardBaseRepository.save(givenBoardBase);
 
         assertThat(givenBoardBase.getTitle(), is(expectedBoardBase.getTitle()));
         assertThat(givenBoardBase.getLocation(), is(expectedBoardBase.getLocation()));
         assertThat(givenBoardBase.getContents(), is(expectedBoardBase.getContents()));
     }
+
+//    @Test
+//    public void 글_저장_테스트() {
+//
+//        BoardBase givenBoardBase = new BoardBase();
+//        givenBoardBase.setTitle("글 작성");
+//        givenBoardBase.setLocation("의정부");
+//        givenBoardBase.setContents("의정부 놀러감");
+//        givenBoardBase.setParties("친구들과");
+//        givenBoardBase.setCreatorId("sunlike0301");
+//        givenBoardBase.setStartDate(LocalDateTime.now());
+//        givenBoardBase.setEndDate(LocalDateTime.now());
+//        givenBoardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+//
+//        BoardBase expectedBoardBase = boardBaseRepository.save(givenBoardBase);
+//
+//        assertThat(givenBoardBase.getTitle(), is(expectedBoardBase.getTitle()));
+//        assertThat(givenBoardBase.getLocation(), is(expectedBoardBase.getLocation()));
+//        assertThat(givenBoardBase.getContents(), is(expectedBoardBase.getContents()));
+//    }
 
     @Test
     public void 글_조회_테스트() {
