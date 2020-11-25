@@ -75,6 +75,7 @@ public class BoardBaseConverter implements AttributeConverter<BoardBaseDTO, Boar
     public BoardBaseDTO convertToEntityAttribute(BoardBase boardBase) {
 
         BoardBaseDTO boardBaseDTO = modelMapper.map(boardBase, BoardBaseDTO.class);
+
         boardBaseDTO.setMultipartFile(getMultipartFile(boardBaseDTO.getMainPhotoPath()));
 
         List<BoardDetailDTO> boardDetailDTOS = boardBaseDTO.getBoardDetails();
@@ -93,8 +94,9 @@ public class BoardBaseConverter implements AttributeConverter<BoardBaseDTO, Boar
 
     private MultipartFile getMultipartFile(String photoPath) throws IOException {
         File file = new File(photoPath);
-        DiskFileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false,
-                file.getName(), (int) file.length() , file.getParentFile());
+
+        DiskFileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()),
+                false, file.getName(), (int) file.length() , file.getParentFile());
 
         IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
 

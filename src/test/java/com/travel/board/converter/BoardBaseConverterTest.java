@@ -6,8 +6,6 @@ import com.travel.board.dto.BoardDetailDTO;
 import com.travel.board.dto.BoardFileDTO;
 import com.travel.board.model.BoardBase;
 import com.travel.board.repository.BoardBaseRepository;
-import com.travel.board.repository.BoardDetailRepository;
-import com.travel.board.repository.BoardFileRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,12 +27,6 @@ class BoardBaseConverterTest {
 
     @Autowired
     private BoardBaseRepository boardBaseRepository;
-
-    @Autowired
-    private BoardDetailRepository boardDetailRepository;
-
-    @Autowired
-    private BoardFileRepository boardFileRepository;
 
     @Autowired
     private BoardBaseConverter boardBaseConverter;
@@ -85,14 +77,14 @@ class BoardBaseConverterTest {
 
         BoardBase boardBase = boardBaseConverter.convertToDatabaseColumn(boardBaseDTO);
 
-        boardBase.getBoardDetails().stream().forEach(boardDetail -> System.out.println(boardDetail.getBoardFiles().toString()));
+        boardBase.getBoardDetails().forEach(boardDetail -> System.out.println(boardDetail.getBoardFiles().toString()));
 
         assertThat(boardBase.getTitle(), is(boardBaseDTO.getTitle()));
         assertTrue(new File(boardBase.getMainPhotoPath()).exists());
 
         BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
 
-        savedBoardBase.getBoardDetails().stream().forEach(boardDetail -> System.out.println(boardDetail.getBoardFiles().toString()));
+        savedBoardBase.getBoardDetails().forEach(boardDetail -> System.out.println(boardDetail.getBoardFiles().toString()));
 
         assertThat(savedBoardBase.getBoardDetails().size(), is(2));
     }
@@ -100,9 +92,9 @@ class BoardBaseConverterTest {
     @Transactional
     @Test
     public void BoardBase를_BoardBaseDTO를_convert() {
-        BoardBase findedboardBase = boardBaseRepository.findById(141L).get();
+        BoardBase findBoardBase = boardBaseRepository.findById(141L).orElseThrow();
 
-        BoardBaseDTO boardBaseDTO = boardBaseConverter.convertToEntityAttribute(findedboardBase);
+        BoardBaseDTO boardBaseDTO = boardBaseConverter.convertToEntityAttribute(findBoardBase);
 
         System.out.println(boardBaseDTO.toString());
 

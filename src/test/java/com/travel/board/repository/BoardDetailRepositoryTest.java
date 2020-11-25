@@ -34,7 +34,7 @@ class BoardDetailRepositoryTest {
         boardBase.setCreatorId("sunlike0301");
         boardBase.setStartDate(time);
         boardBase.setEndDate(time.plusDays(3));
-        boardBase.setMainPhotoPath("/photo/main/" + time);
+        boardBase.setMainPhotoPath("images/818656060257300_test.jpg");
 
         BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
 

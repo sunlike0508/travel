@@ -1,6 +1,5 @@
 package com.travel.board.model;
 
-import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -50,5 +49,5 @@ public class BoardBase {
 	private LocalDateTime createdDatetime;
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy = "boardBase", cascade=CascadeType.ALL)
-	private List<BoardDetail> boardDetails = Lists.newArrayList();
+	private List<BoardDetail> boardDetails;
 }

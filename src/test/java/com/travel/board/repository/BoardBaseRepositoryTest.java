@@ -1,20 +1,20 @@
 package com.travel.board.repository;
 
+import com.travel.CommonMakeModel;
 import com.travel.board.model.BoardBase;
 import com.travel.board.model.BoardDetail;
-import com.travel.board.model.BoardFile;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -24,121 +24,76 @@ class BoardBaseRepositoryTest {
     @Autowired
     private BoardBaseRepository boardBaseRepository;
 
+    private CommonMakeModel commonMakeModel;
+
+    @BeforeEach
+    public void setUp() {
+        commonMakeModel = new CommonMakeModel();
+    }
+
     @Test
     public void 글_저장_테스트() {
 
-        BoardBase givenBoardBase = new BoardBase();
-        givenBoardBase.setTitle("글 작성");
-        givenBoardBase.setLocation("의정부");
-        givenBoardBase.setContents("의정부 놀러감");
-        givenBoardBase.setParties("친구들과");
-        givenBoardBase.setCreatorId("sunlike0301");
-        givenBoardBase.setStartDate(LocalDateTime.now());
-        givenBoardBase.setEndDate(LocalDateTime.now());
-        givenBoardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+        // given
+        BoardBase boardBase = commonMakeModel.getBoardBase();
 
-        BoardDetail boardDetail = new BoardDetail();
-        //boardDetail
+        // when
+        BoardBase expectedBoardBase = boardBaseRepository.save(boardBase);
 
-
-        BoardBase expectedBoardBase = boardBaseRepository.save(givenBoardBase);
-
-        assertThat(givenBoardBase.getTitle(), is(expectedBoardBase.getTitle()));
-        assertThat(givenBoardBase.getLocation(), is(expectedBoardBase.getLocation()));
-        assertThat(givenBoardBase.getContents(), is(expectedBoardBase.getContents()));
+        // then
+        assertThat(boardBase.getTitle(), is(expectedBoardBase.getTitle()));
+        assertThat(boardBase.getLocation(), is(expectedBoardBase.getLocation()));
+        assertThat(boardBase.getContents(), is(expectedBoardBase.getContents()));
     }
-
-//    @Test
-//    public void 글_저장_테스트() {
-//
-//        BoardBase givenBoardBase = new BoardBase();
-//        givenBoardBase.setTitle("글 작성");
-//        givenBoardBase.setLocation("의정부");
-//        givenBoardBase.setContents("의정부 놀러감");
-//        givenBoardBase.setParties("친구들과");
-//        givenBoardBase.setCreatorId("sunlike0301");
-//        givenBoardBase.setStartDate(LocalDateTime.now());
-//        givenBoardBase.setEndDate(LocalDateTime.now());
-//        givenBoardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
-//
-//        BoardBase expectedBoardBase = boardBaseRepository.save(givenBoardBase);
-//
-//        assertThat(givenBoardBase.getTitle(), is(expectedBoardBase.getTitle()));
-//        assertThat(givenBoardBase.getLocation(), is(expectedBoardBase.getLocation()));
-//        assertThat(givenBoardBase.getContents(), is(expectedBoardBase.getContents()));
-//    }
 
     @Test
     public void 글_조회_테스트() {
-        String creatorId = "sunlike" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        BoardBase boardBase = commonMakeModel.getBoardBase();
 
-        List<BoardBase> boardBases = new ArrayList<>();
+        BoardBase saveBoardBase = boardBaseRepository.save(boardBase);
+        
+        BoardBase findBoardBase = boardBaseRepository.findById(saveBoardBase.getId()).orElseThrow();
+        
+        assertNotNull(findBoardBase);
 
-        for(int i = 0 ; i < 5; i++){
-            BoardBase boardBase = new BoardBase();
-            boardBase.setTitle("글 작성" + i);
-            boardBase.setLocation("의정부" + i);
-            boardBase.setContents("의정부 놀러감" + i);
-            boardBase.setParties("친구들과" + i);
-            boardBase.setCreatorId(creatorId);
-            boardBase.setStartDate(LocalDateTime.now());
-            boardBase.setEndDate(LocalDateTime.now());
-            boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+        List<BoardBase> boardBaseList = boardBaseRepository.findAllByCreatorId(saveBoardBase.getCreatorId());
 
-            boardBases.add(boardBase);
-        }
-
-        boardBaseRepository.saveAll(boardBases);
-
-        List<BoardBase> boardBaseList = boardBaseRepository.findAllByCreatorId(creatorId);
-
-        assertThat(boardBaseList.size(), is(5));
+        assertNotNull(boardBaseList);
     }
 
     @Test
     public void 글_삭제_테스트() {
 
-        BoardBase boardBase = new BoardBase();
-        boardBase.setTitle("글 작성");
-        boardBase.setLocation("의정부");
-        boardBase.setContents("의정부 놀러감");
-        boardBase.setParties("친구들과");
-        boardBase.setCreatorId("sunlike0301");
-        boardBase.setStartDate(LocalDateTime.now());
-        boardBase.setEndDate(LocalDateTime.now());
-        boardBase.setMainPhotoPath("/photo/main/" + LocalDateTime.now());
+        // given
+        BoardBase boardBase = commonMakeModel.getBoardBase();
 
-        BoardBase savedBoardBase = boardBaseRepository.save(boardBase);
+        BoardBase saveBoardBase = boardBaseRepository.save(boardBase);
 
-        BoardBase findBoardBase = boardBaseRepository.findById(savedBoardBase.getId()).get();
+        BoardBase findBoardBase = boardBaseRepository.findById(saveBoardBase.getId()).orElseThrow();
 
-        assertThat(savedBoardBase.getId(),is(findBoardBase.getId()));
+        assertThat(saveBoardBase.getId(),is(findBoardBase.getId()));
 
         // when
-        boardBaseRepository.delete(savedBoardBase);
+        boardBaseRepository.delete(saveBoardBase);
 
         // then
         NoSuchElementException expectedException
-                = assertThrows(NoSuchElementException.class, () -> boardBaseRepository.findById(savedBoardBase.getId()).get());
+                = assertThrows(NoSuchElementException.class, () -> boardBaseRepository.findById(saveBoardBase.getId()).orElseThrow());
 
         assertThat(expectedException.getMessage(), is("No value present"));
     }
 
+    @Transactional
     @Test
     public void 글_detail_file_전체_조회_테스트() {
-        BoardBase boardBase = boardBaseRepository.findById(112L).get();
+        BoardBase boardBase = boardBaseRepository.findById(141L).orElseThrow();
 
         System.out.println(boardBase.toString());
 
         List<BoardDetail> boardDetails = boardBase.getBoardDetails();
 
-        for(BoardDetail boardDetail : boardDetails) {
+        assertNotNull(boardDetails);
 
-            System.out.println(boardDetail.toString());
-
-            List<BoardFile> boardFiles = boardDetail.getBoardFiles();
-
-            boardFiles.stream().forEach(boardFile -> System.out.println(boardFile.toString()));
-        }
+        boardDetails.forEach(boardDetail -> assertNotNull(boardDetail.getBoardFiles()));
     }
 }
