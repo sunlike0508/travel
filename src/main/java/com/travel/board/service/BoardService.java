@@ -11,5 +11,5 @@ public interface BoardService {
 
     BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO);
 
-    void deleteBoard(long idx);
+    List<BoardBaseDTO> deleteBoard(long idx, String creatorId);
 }

@@ -52,11 +52,11 @@ public class BoardController {
     }
 
     @DeleteMapping("/{idx}")
-    public ResponseEntity<BoardBaseDTO> deleteBoard(@PathVariable("idx") long idx) {
+    public ResponseEntity<BoardBaseDTO> deleteBoard(@PathVariable("idx") long idx, @RequestParam String creatorId) {
 
-        boardService.deleteBoard(idx);
+        List<BoardBaseDTO> boardBaseDTOS = boardService.deleteBoard(idx, creatorId);
 
-        return new ResponseEntity(null, HttpStatus.OK);
+        return new ResponseEntity(boardBaseDTOS, HttpStatus.OK);
     }
 
 }

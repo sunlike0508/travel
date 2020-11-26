@@ -53,7 +53,11 @@ public class CommonMakeModel {
         boardFileDTO.setFileSize(100L);
         boardFileDTO.setMultipartFile(getMockMultipartFile());
 
-        boardDetailDTO.setBoardFiles(Lists.newArrayList(boardFileDTO));
+        BoardFileDTO boardFileDTO2 = new BoardFileDTO();
+        boardFileDTO2.setFileSize(100L);
+        boardFileDTO2.setMultipartFile(getMockMultipartFile());
+
+        boardDetailDTO.setBoardFiles(Lists.newArrayList(boardFileDTO, boardFileDTO2));
         boardBaseDTO.setBoardDetails(Lists.newArrayList(boardDetailDTO));
 
         return boardBaseDTO;

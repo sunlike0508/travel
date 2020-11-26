@@ -43,16 +43,19 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO) {
-//        BoardBase covertedBoardBase = boardBaseConverter.convert(boardBaseDTO);
-//
-//        BoardBase updatedBoardBase = boardBaseRepository.save(covertedBoardBase);
+        BoardBase boardBase = boardBaseConverter.convertToDatabaseColumn(boardBaseDTO);
 
-        return null;
-        //return convertedBoardBaseDTO;
+        BoardBase updateBoardBase = boardBaseRepository.save(boardBase);
+
+        return boardBaseConverter.convertToEntityAttribute(updateBoardBase);
     }
 
     @Override
-    public void deleteBoard(long idx) {
+    public List<BoardBaseDTO> deleteBoard(long idx, String creatorId) {
         boardBaseRepository.deleteById(idx);
+
+        List<BoardBase> boardBases = boardBaseRepository.findAllByCreatorId(creatorId);
+
+        return boardBases.stream().map(boardBaseConverter::convertToEntityAttribute).collect(Collectors.toList());
     }
 }
