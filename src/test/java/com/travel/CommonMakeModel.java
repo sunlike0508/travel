@@ -11,16 +11,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class CommonMakeModel {
 
     public MockMultipartFile getMockMultipartFile(String path, String fileName, String type) throws IOException {
 
         FileInputStream fileInputStream = new FileInputStream(new File(path + fileName + "." + type));
-        MockMultipartFile mockMultipartFile
-                = new MockMultipartFile(fileName, fileName + "." + type, type, fileInputStream);
 
-        return mockMultipartFile;
+        return new MockMultipartFile(fileName, fileName + "." + type, type, fileInputStream);
     }
 
     public BoardBase getBoardBase() {
@@ -42,7 +41,7 @@ public class CommonMakeModel {
         boardBaseDTO.setLocation("의정부");
         boardBaseDTO.setContents("의정부 놀러감");
         boardBaseDTO.setParties("친구들과");
-        boardBaseDTO.setCreatorId("sunlike0301");
+        boardBaseDTO.setCreatorId("sunlike_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         boardBaseDTO.setStartDate(LocalDateTime.now());
         boardBaseDTO.setEndDate(LocalDateTime.now());
         boardBaseDTO.setMultipartFile(getMockMultipartFile());

@@ -5,8 +5,6 @@ import com.travel.board.dto.BoardDetailDTO;
 import com.travel.board.dto.BoardFileDTO;
 import com.travel.board.file.FileUtils;
 import com.travel.board.model.BoardBase;
-import com.travel.board.model.BoardDetail;
-import com.travel.board.model.BoardFile;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -55,17 +53,10 @@ public class BoardBaseConverter implements AttributeConverter<BoardBaseDTO, Boar
 
         BoardBase boardBase = modelMapper.map(boardBaseDTO, BoardBase.class);
 
-        List<BoardDetail> boardDetails = boardBase.getBoardDetails();
-
-        for(BoardDetail boardDetail : boardDetails) {
+        boardBase.getBoardDetails().stream().forEach(boardDetail -> {
             boardDetail.setBoardBase(boardBase);
-
-            List<BoardFile> boardFiles = boardDetail.getBoardFiles();
-
-            for(BoardFile boardFile : boardFiles) {
-                boardFile.setBoardDetail(boardDetail);
-            }
-        }
+            boardDetail.getBoardFiles().forEach(boardFile -> boardFile.setBoardDetail(boardDetail));
+        });
 
         return boardBase;
     }

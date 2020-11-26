@@ -1,17 +1,15 @@
 package com.travel.board.service;
 
 import com.travel.board.dto.BoardBaseDTO;
-import com.travel.board.model.BoardBase;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.List;
 
 public interface BoardService {
     List<BoardBaseDTO> selectBoardList(String creatorId);
 
-    BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO) throws Exception;
+    BoardBaseDTO insertBoard(BoardBaseDTO boardBaseDTO);
 
-    BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO) throws Exception;
+    BoardBaseDTO updateBoard(BoardBaseDTO boardBaseDTO);
 
     void deleteBoard(long idx);
 }

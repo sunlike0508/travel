@@ -7,7 +7,7 @@ public class ApiResponseFactory {
 
     public static ResponseEntity<ApiResponse> createSuccessResponse(Object data) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .code("SUCC").message("성공").data(data).build();
+                .code("SUCCESS").message("성공").data(data).build();
 
         return new ResponseEntity(apiResponse, HttpStatus.OK);
     }
