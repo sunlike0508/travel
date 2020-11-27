@@ -49,4 +49,11 @@ class MemberRepositoryTest {
         assertNotNull(findedMember.getId());
         assertNotNull(findedMember.getCreatedDatetime());
     }
+
+    @Test
+    public void findByMemberIdTest() {
+        Member member = memberRepository.findByMemberId("sunlike0301");
+
+        assertThat(member.getMemberId(), is("sunlike0301"));
+    }
 }

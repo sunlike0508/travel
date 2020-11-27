@@ -15,7 +15,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/login/{memberId}")
     public ResponseEntity<Member> loginMember(@PathVariable("memberId") String memberId, @RequestParam String password) {
 
         Member member = memberService.findByMemberIdAndPassword(memberId, password);
@@ -23,11 +23,20 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/join")
     public ResponseEntity<Member> joinMember(@RequestBody Member member) {
 
         memberService.joinMember(member);
 
         return new ResponseEntity<>(null, HttpStatus.CREATED);
+    }
+
+    // 친구 ID 찾기
+    @GetMapping("/search/{memberId}")
+    public ResponseEntity<String> searchMember(@PathVariable("memberId") String memberId) {
+
+        String findMemberId = memberService.findByMemberId(memberId);
+
+        return new ResponseEntity<>(findMemberId, HttpStatus.OK);
     }
 }
